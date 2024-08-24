@@ -5,6 +5,7 @@ import { faEnvelope, faLock, faArrowRight } from '@fortawesome/free-solid-svg-ic
 import { faFacebookF, faTwitter, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 const LoginForm = () => {
 
   const navigate=useNavigate()
@@ -18,9 +19,34 @@ const LoginForm = () => {
   const onSubmit = (data) => {
     axios.post('http://localhost:8000/login', data, {withCredentials: true})
       .then(response => {
-       
-        if(response.data){
-           console.log(response)
+         if(response.data.passVer){
+          Swal.fire({
+            title: 'Error!',
+            text: 'User Login failed! Please try again.',
+            icon: 'error',
+            confirmButtonText: 'Retry'
+          }).then(() => {
+            navigate('/login'); 
+          });
+         }
+        if(response.data.userVer){
+          Swal.fire({
+            title: 'Success!',
+            text: 'User Login successfully!',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            navigate('/home'); 
+          });
+        }else{
+          Swal.fire({
+            title: 'Error!',
+            text: 'User Login failed! Please try again.',
+            icon: 'error',
+            confirmButtonText: 'Retry'
+          }).then(() => {
+            navigate('/login'); 
+          });
         }
       })
       .catch(error => {

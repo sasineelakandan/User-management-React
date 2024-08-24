@@ -1,19 +1,21 @@
 import jwt from 'jsonwebtoken';
-
+import { JWT_KEY } from '../utils/config.js';
+const key= process.env.JWT_KEY
+ 
 function authenticateToken(req, res, next) {
-    const key= process.env.JWT_KEY
-     console.log(key)
+    
     const token = req.cookies.token;
-     console.log(token)
+    
     if (!token) {
         return res.status(401).send({ message: 'Access denied, token missing!' });
     }
 
     try {
-       console.log('hai')
-        const verified = jwt.verify(token, key);
-        console.log(verified)
+       
+        const verified = jwt.verify(token, JWT_KEY);
+        
         req.user = verified; 
+       
         next(); 
     } catch (err) {
         res.status(400).json({ message: 'Invalid token' });

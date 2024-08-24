@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 
+
 const userShema= new mongoose.Schema({
     Name:{
         type:String,
@@ -18,6 +19,15 @@ const userShema= new mongoose.Schema({
        
 
     },
+    phone: {
+        type: String,
+        required: [true, 'Phone Number is required'],
+        match: [/^\d{10}$/, 'Invalid phone number'],
+    },
+    ProfileSettings: {
+        type: Boolean,
+        default: false
+    }
    
    
 })
