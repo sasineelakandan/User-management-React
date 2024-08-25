@@ -2,19 +2,27 @@ import React, { useEffect, useState,memo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEnvelope, faPhone, faEdit } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from '../redux/Slice';
 const UserProfile = () => {
-  const[user,setUser]=useState(null)
-  
- 
- useEffect(()=>{
-  axios.get('http://localhost:8000/profile', { withCredentials: true })
-  .then(response => {
-    if (response.data) {
-     setUser(response.data)
-    }
-  })
- },[])
- 
+
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/profile', { withCredentials: true })
+      .then(response => {
+        if (response.data) {
+          
+          dispatch(setUser(response.data.user));
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [dispatch]);
+
+ console.log(user)
 
 
   return (

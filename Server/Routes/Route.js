@@ -1,5 +1,5 @@
 import Router from 'express'
-import { Signup,Login,Profile } from '../Controller/Authcontroler.js'
+import { Signup,Login,Profile} from '../Controller/Authcontroler.js'
 import AuthenticateToken from '../Midlewere/AuthenticateToken.js'
 
 const authRoutes=Router()

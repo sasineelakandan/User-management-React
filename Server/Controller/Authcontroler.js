@@ -41,7 +41,8 @@ export const Signup=async(req,res,next)=>{
     try{
        
       const user = await User.findOne({ email: req.body.email });
-  
+      
+      
       if (!user) {
       
         return res.send({ userVer: false });
@@ -74,11 +75,18 @@ export const Signup=async(req,res,next)=>{
   export const Profile=async(req,res)=>{
   
     try{ 
+      
       const user=await User.findOne({_id:req.user.id})
-      res.send(user)
+      res.send({user})
+       
+        
+   
+    
       
 
     }catch(err){
       console.log(err)
     }
   }
+
+ 

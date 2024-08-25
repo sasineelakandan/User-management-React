@@ -30,13 +30,14 @@ const LoginForm = () => {
           });
          }
         if(response.data.userVer){
+          console.log(response.data)
           Swal.fire({
             title: 'Success!',
             text: 'User Login successfully!',
             icon: 'success',
             confirmButtonText: 'OK'
           }).then(() => {
-            navigate('/home'); 
+            navigate('/'); 
           });
         }else{
           Swal.fire({
@@ -109,7 +110,7 @@ const LoginForm = () => {
         </form>
         <p className="text-white text-center mt-6">
           Don't have an account?{' '}
-          <a href="/" className="font-bold hover:underline text-pink-200">
+          <a href="/sigin" className="font-bold hover:underline text-pink-200">
             Sign Up
           </a>
         </p>
