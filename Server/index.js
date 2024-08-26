@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
 import authRoutes from './Routes/Route.js'
 import { DATABASE_URL, PORT,ORIGIN } from './utils/config.js'
+import bodyParser from'body-parser'
+
 
 dotenv.config()
 
@@ -19,6 +21,8 @@ console.log('mongodb connected')
 .catch((error)=>{
  console.log(error)
 })
+app.use(bodyParser.json({ limit: '50mb' })); 
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 app.use(cors({
     origin: [ORIGIN],
     methods:['GET','PUT','POST','PATCH',"DELETE"],

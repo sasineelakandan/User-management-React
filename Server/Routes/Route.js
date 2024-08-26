@@ -6,6 +6,7 @@ const authRoutes=Router()
 
 authRoutes.post('/signup',Signup)
 authRoutes.post('/login',Login)
+
 authRoutes.get('/profile',AuthenticateToken,Profile)
 
 export default authRoutes;

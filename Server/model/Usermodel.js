@@ -24,10 +24,9 @@ const userShema= new mongoose.Schema({
         required: [true, 'Phone Number is required'],
         match: [/^\d{10}$/, 'Invalid phone number'],
     },
-    ProfileSettings: {
-        type: String,
-        
-    }
+    profilePicture: {
+        type: String, 
+    },
    
    
 })

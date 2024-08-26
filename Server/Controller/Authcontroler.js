@@ -88,5 +88,7 @@ export const Signup=async(req,res,next)=>{
       console.log(err)
     }
   }
-
- 
+  
+  
+  
+  
