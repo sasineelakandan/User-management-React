@@ -25,8 +25,8 @@ const userShema= new mongoose.Schema({
         match: [/^\d{10}$/, 'Invalid phone number'],
     },
     ProfileSettings: {
-        type: Boolean,
-        default: false
+        type: String,
+        
     }
    
    

@@ -22,7 +22,7 @@ const SignUpPage = () => {
             icon: 'success',
             confirmButtonText: 'OK'
           }).then(() => {
-            navigate('/login');
+            navigate('/');
           });
         }
       })
@@ -114,7 +114,7 @@ const SignUpPage = () => {
         </form>
         <p className="text-white text-center mt-6">
           Already have an account?{' '}
-          <a href="/login" className="font-bold hover:underline text-pink-200">
+          <a href="/" className="font-bold hover:underline text-pink-200">
             Log in
           </a>
         </p>

@@ -17,6 +17,7 @@ const LoginForm = () => {
   } = useForm();
 
   const onSubmit = (data) => {
+    
     axios.post('http://localhost:8000/login', data, {withCredentials: true})
       .then(response => {
          if(response.data.passVer){
@@ -26,18 +27,18 @@ const LoginForm = () => {
             icon: 'error',
             confirmButtonText: 'Retry'
           }).then(() => {
-            navigate('/login'); 
+            navigate('/'); 
           });
          }
         if(response.data.userVer){
-          console.log(response.data)
+          
           Swal.fire({
             title: 'Success!',
             text: 'User Login successfully!',
             icon: 'success',
             confirmButtonText: 'OK'
           }).then(() => {
-            navigate('/'); 
+            navigate('/profile'); 
           });
         }else{
           Swal.fire({
@@ -46,7 +47,7 @@ const LoginForm = () => {
             icon: 'error',
             confirmButtonText: 'Retry'
           }).then(() => {
-            navigate('/login'); 
+            navigate('/'); 
           });
         }
       })
@@ -110,7 +111,7 @@ const LoginForm = () => {
         </form>
         <p className="text-white text-center mt-6">
           Don't have an account?{' '}
-          <a href="/sigin" className="font-bold hover:underline text-pink-200">
+          <a href="/signup" className="font-bold hover:underline text-pink-200">
             Sign Up
           </a>
         </p>

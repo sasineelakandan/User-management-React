@@ -8,25 +8,23 @@ import { useSelector } from 'react-redux';
 
 
 const App = () => {
-  
-   
-  
-  const user = useSelector((state) => state.user); 
+
+  const user = useSelector((state) => state.user);
   console.log(user)
- 
+
   
+ 
   return (
-    <div>
-     <Router>
+    
+    <Router>
       <Routes>
-      <Route path='/sigin' element={ <SignUpPage/>}/>
-      <Route path='/login' element={ <LoginForm/>} />
-      <Route path='/'  element={<UserProfile />}/> 
-      <Route path='/editProfile'  element={<Home/>}/> 
+        <Route path='/signup' element={ <SignUpPage/>}/>
+        <Route path='/profile' element={ <UserProfile /> } />
+        <Route path='/' element={user ?  <Navigate to={"/profile"} /> : <LoginForm/>}/> 
+        <Route path='/editProfile'  element={<Home/>}/> 
       </Routes>
-      </Router>
-</div>
-  );
-}
+    </Router>
+);
+};
 
 export default App;
