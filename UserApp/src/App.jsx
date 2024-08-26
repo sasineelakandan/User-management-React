@@ -5,7 +5,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Home from './Compenets/Home';
 import UserProfile from './Compenets/Profile';
 import { useSelector } from 'react-redux';
-
+import AdminHome from './Compenets/AdminHome';
+import Users from './Compenets/Users'
 
 const App = () => {
 
@@ -22,6 +23,8 @@ const App = () => {
         <Route path='/profile' element={ <UserProfile /> } />
         <Route path='/' element={user ?  <Navigate to={"/profile"} /> : <LoginForm/>}/> 
         <Route path='/editProfile'  element={<Home/>}/> 
+        <Route path='/adminHome'  element={<AdminHome/>}/> 
+        <Route path='/users'  element={<Users/>}/> 
       </Routes>
     </Router>
 );
