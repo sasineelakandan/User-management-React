@@ -1,4 +1,6 @@
 import jwt from 'jsonwebtoken';
+import pkg from 'bcryptjs';
+const { genSalt, hash ,} = pkg
 import { ADMIN, PASSWORD, JWT_KEY } from '../utils/config.js'; // Adjust the import according to where your variables are defined
 import User from '../model/Usermodel.js';
 export const adminLogin = async (req, res) => {
@@ -72,4 +74,38 @@ export const updateUser=async(req,res)=>{
   }catch(err){
     console.log(err)
   }
-}  
+}
+
+
+export const addUser = async (req, res) => {
+  try {
+    const { name, email, phone, password } = req.body;
+    
+    // Check if the user already exists by email
+    const existingUser = await User.findOne({ email: email ,phone:phone });
+    if (existingUser) {
+      return res.status(400).json({ userExists: true, message: 'Email already exists' });
+    }
+    
+    
+    const salt = await genSalt(10);
+    const hashedPassword = await hash(password, salt);
+    
+    
+    const newUser = new User({ 
+      Name: name,
+      email: email,
+      phone: phone,
+      Password: hashedPassword
+    });
+    
+    
+    await newUser.save();
+    
+    
+    return res.status(201).json({ success: true, message: 'User added successfully' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
