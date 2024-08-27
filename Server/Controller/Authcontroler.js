@@ -60,7 +60,7 @@ export const Signup=async(req,res,next)=>{
       res.status(200).cookie('token', token, {
       httpOnly: true,
     
-    maxAge: 60 * 60 * 1000, 
+     maxAge: 60 * 60 * 1000, 
       }).send({
         message: 'User registered successfully!',
         token: token,

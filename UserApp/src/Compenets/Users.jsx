@@ -1,15 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../Compenets/Sidebar'; // Adjust the import path as needed
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
-
-
-const users = [
-  { id: 1, name: 'Alice', email: 'alice@example.com' },
-  { id: 2, name: 'Bob', email: 'bob@example.com' },
-  { id: 3, name: 'Charlie', email: 'charlie@example.com' },
-];
 
 const UsersTable = () => {
+const[users,setUsers]=useState([]) 
+const navigate=useNavigate() 
+useEffect(()=>{
+  axios.get('http://localhost:8000/Users', { withCredentials: true })
+  .then((response) => {
+    if(response.data){
+    setUsers(response.data);
+     
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+  
+},[])
+
+function handleClick(userId){
+  navigate(`/edit?id=${userId}`);
+}
+
     return (
       <div className="flex min-h-screen">
         {/* Sidebar */}
@@ -23,8 +38,8 @@ const UsersTable = () => {
             <table className="w-full border border-gray-300">
               <thead>
                 <tr className="bg-gray-100 border-b">
-                  <th className="py-2 px-4 text-left">ID</th>
                   <th className="py-2 px-4 text-left">Name</th>
+                  <th className="py-2 px-4 text-left">Phone</th>
                   <th className="py-2 px-4 text-left">Email</th>
                   <th className="py-2 px-4 text-left">Actions</th>
                   
@@ -37,14 +52,17 @@ const UsersTable = () => {
                   </tr>
                 ) : (
                   users.map(user => (
-                    <tr key={user.id} className="border-b hover:bg-gray-50">
-                      <td className="py-2 px-4">{user.id}</td>
-                      <td className="py-2 px-4">{user.name}</td>
-                      <td className="py-2 px-4">{user.email}</td>
+                    <tr key={user._id} className="border-b hover:bg-gray-50">
+                      <td className="py-2 px-4">{user.Name}</td>
+                      <td className="py-2 px-4">{user?.phone}</td>
+                      <td className="py-2 px-4">{user?.email}</td>
                       <td className="py-2 px-4">
-                      <button className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        Edit
-                      </button>
+                    
+                      <button key={user._id}
+                       onClick={() => handleClick(user._id)}   className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      Edit
+                     </button>
+                   
                       <button className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
                         Delete
                       </button>

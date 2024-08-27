@@ -7,6 +7,7 @@ import mongoose from 'mongoose'
 import authRoutes from './Routes/Route.js'
 import { DATABASE_URL, PORT,ORIGIN } from './utils/config.js'
 import bodyParser from'body-parser'
+import adminRoutes from './Routes/AdminRoute.js'
 
 
 dotenv.config()
@@ -32,7 +33,7 @@ app.use(cookieParser())
 app.use(express.json())
 
 app.use(authRoutes)
-
+app.use(adminRoutes)
 const Server=app.listen(Port,()=>{
     console.log(`Server is Running ${Port}`)
 })

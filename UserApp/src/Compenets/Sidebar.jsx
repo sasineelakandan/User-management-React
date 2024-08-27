@@ -1,10 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaTachometerAlt, FaUsers, FaChartPie, FaCog } from 'react-icons/fa';
-
- 
+import { useDispatch, useSelector } from 'react-redux';
+import { setAdmin } from '../redux/Slice';
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
+    const dispatch = useDispatch();
+    const navigate=useNavigate()
+        const Admin = useSelector((state) => state.isAdmin); 
+    function handleclick(){
+        
+        dispatch(setAdmin(false))
+        navigate('/adminlogin') 
+        
+    }
     return (
         <div className="flex">
             {/* Sidebar */}
@@ -25,10 +35,10 @@ const Sidebar = () => {
                             </Link>
                         </li>
                         <li className="mb-6">
-                            <Link to="/analytics" className="flex items-center space-x-2">
+                            <button onClick={handleclick} className="flex items-center space-x-2">
                                 <FaChartPie />
-                                <span>Analytics</span>
-                            </Link>
+                                <span>logout</span>
+                            </button>
                         </li>
                         <li>
                             <Link to="/settings" className="flex items-center space-x-2">

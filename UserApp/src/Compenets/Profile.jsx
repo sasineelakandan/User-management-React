@@ -4,11 +4,14 @@ import { faUser, faEnvelope, faPhone, faEdit } from '@fortawesome/free-solid-svg
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../redux/Slice';
+
+
+
 const UserProfile = () => {
 
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-
+  const user = useSelector((state) => state.user.user);
+  
   useEffect(() => {
     axios.get('http://localhost:8000/profile', { withCredentials: true })
       .then(response => {
@@ -21,6 +24,7 @@ const UserProfile = () => {
         console.log(err);
       });
   }, [dispatch]);
+  
 
  console.log(user)
 
