@@ -36,7 +36,7 @@ const Sidebar = () => {
                         </li>
                         <li className="mb-6">
                             <button onClick={handleclick} className="flex items-center space-x-2">
-                                <FaChartPie />
+                                <FaUsers />
                                 <span>logout</span>
                             </button>
                         </li>

@@ -88,7 +88,15 @@ export const Signup=async(req,res,next)=>{
       console.log(err)
     }
   }
-  
+  export const Images=async(req,res)=>{
+    try{
+      
+      const user=await User.updateOne({_id:req.query.id},{$set:{profilePicture:req.query.Url}})
+      res.send({success:true})
+    }catch(err){
+     console.log(err)
+    }
+  }
   
   
   

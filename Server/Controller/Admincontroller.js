@@ -37,7 +37,8 @@ export const adminLogin = async (req, res) => {
 
   export const Users=async(req,res)=>{
     try{
-        const users= await User.find({})
+        const users= await User.find()
+        
         res.send(users)
     }catch(err){
       console.log(err)
@@ -63,6 +64,17 @@ export const updateUser=async(req,res)=>{
   try{ 
     
     
+    const existingUser = await User.findOne({
+      _id: { $ne: req.query.id }, // Exclude the current user from the check
+      $or: [{ email:req.body.email }, { phone:req.body.phone }]
+    });
+    console.log(existingUser)
+    if (existingUser) {
+      return res.send({success: false})
+        
+      
+      
+    }
     const update= await User.updateOne({_id:req.query.id},{$set:{
       Name:req.body.name,
       email:req.body.email,
@@ -80,32 +92,61 @@ export const updateUser=async(req,res)=>{
 export const addUser = async (req, res) => {
   try {
     const { name, email, phone, password } = req.body;
-    
-    // Check if the user already exists by email
-    const existingUser = await User.findOne({ email: email ,phone:phone });
-    if (existingUser) {
-      return res.status(400).json({ userExists: true, message: 'Email already exists' });
+
+   
+    if (!name.trim() || !email.trim() || !phone.trim() || !password.trim()) {
+      return res.send({success: false});
     }
-    
-    
+
+   
+    const existingUser = await User.findOne({ $or: [{ email: email }, { phone: phone }] });
+    console.log(existingUser)
+    if (existingUser) {
+      return res.send({userExists: true})
+    }
+
+   
     const salt = await genSalt(10);
     const hashedPassword = await hash(password, salt);
-    
-    
+
+   
     const newUser = new User({ 
-      Name: name,
-      email: email,
-      phone: phone,
+      Name: name.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
       Password: hashedPassword
     });
-    
-    
+
+   
     await newUser.save();
+   
     
-    
-    return res.status(201).json({ success: true, message: 'User added successfully' });
+   
+    return res.send({success:true})
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ success: false, message: 'Server error' });
-  }
+    return res.status({success:false})
 };
+ 
+}
+
+export const Delete=async(req,res)=>{
+  try{
+    const update=  await User.deleteOne({_id:req.query.id})
+    res.send({success:true})
+  }catch(err){
+    console.log(err)
+  }
+}
+
+
+export const Search=async(req,res)=>{
+  try {
+    const searchuser = await User.find({ Name: { $regex: req.query.query, $options: 'i' } })
+  
+    res.send(searchuser)
+} catch (error) {
+    console.log(error)
+}
+}
+

@@ -20,7 +20,7 @@ const EditPage = () => {
             .then((response) => {
                 if (response.data) {
                     setUser(response.data);
-                    // Reset the form with the fetched user data
+                    
                     reset({
                         name: response.data.Name,
                         email: response.data.email,
@@ -42,6 +42,15 @@ const EditPage = () => {
                 text: 'Update successfully!',
                 icon: 'success',
                 confirmButtonText: 'OK'
+              }).then(() => {
+                navigate('/users'); 
+              });
+        }else{
+            Swal.fire({
+                title: 'Error!',
+                text: 'this email and phone  alredy create.',
+                icon: 'error',
+                confirmButtonText: 'Retry'
               }).then(() => {
                 navigate('/users'); 
               });
