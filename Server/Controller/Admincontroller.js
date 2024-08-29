@@ -20,7 +20,7 @@ export const adminLogin = async (req, res) => {
   
         return res.status(200).cookie('token', token, {
           httpOnly: true,
-          maxAge: 60 * 60 * 1000, 
+          maxAge: 60 * 60 * 24 * 1000, 
         }).send({
           message: 'Admin logged in successfully!',
           token: token,
@@ -147,6 +147,7 @@ export const Delete=async(req,res)=>{
 
 export const Search=async(req,res)=>{
   try {
+    console.log(req.query)
     const searchuser = await User.find({ Name: { $regex: req.query.query, $options: 'i' } })
   
     res.send(searchuser)

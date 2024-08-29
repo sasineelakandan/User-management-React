@@ -25,7 +25,7 @@ export const Signup=async(req,res,next)=>{
       res.status(200).cookie('token', token, {
     httpOnly: true,
     
-    maxAge: 60 * 60 * 1000, 
+    maxAge: 60 * 60 * 24 * 1000
 }).send({
         message: 'User registered successfully!',
         token: token,
@@ -60,7 +60,7 @@ export const Signup=async(req,res,next)=>{
       res.status(200).cookie('token', token, {
       httpOnly: true,
     
-     maxAge: 60 * 60 * 1000, 
+     maxAge: 60 * 60 * 24 * 1000, 
       }).send({
         message: 'User registered successfully!',
         token: token,
@@ -91,7 +91,7 @@ export const Signup=async(req,res,next)=>{
   export const Images=async(req,res)=>{
     try{
       
-      const user=await User.updateOne({_id:req.query.id},{$set:{profilePicture:req.query.Url}})
+      const user=await User.updateOne({_id:req.body.userid},{$set:{profilePicture:req.body.url}})
       res.send({success:true})
     }catch(err){
      console.log(err)

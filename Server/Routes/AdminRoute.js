@@ -9,6 +9,6 @@ adminRoutes.get('/users',authenticateToken,Users)
 adminRoutes.put('/updateuser',authenticateToken,updateUser)
 adminRoutes.put('/addUser',authenticateToken,addUser)
 adminRoutes.delete('/Delete',authenticateToken,Delete)
-adminRoutes.post('/search',authenticateToken,Search)
+adminRoutes.post('/search',Search)
 
 export default adminRoutes;

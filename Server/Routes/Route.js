@@ -7,7 +7,7 @@ const authRoutes=Router()
 
 authRoutes.post('/signup',Signup)
 authRoutes.post('/login',Login)
-authRoutes.patch('/Images',Images)
+authRoutes.patch('/Images',AuthenticateToken,Images)
 authRoutes.get('/profile',AuthenticateToken,Profile)
 
 

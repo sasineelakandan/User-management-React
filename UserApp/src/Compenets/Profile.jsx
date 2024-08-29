@@ -4,16 +4,15 @@ import { faUser, faEnvelope, faCamera, faPhone } from '@fortawesome/free-solid-s
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../redux/Slice';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { storage} from '../firbase/firebase.js'; 
+import { uploadImagesToFireStore } from '../firbase/firebase.js'
 import { useNavigate } from 'react-router-dom'; // Added import for navigation
-
+import Swal from 'sweetalert2';
 const UserProfile = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate(); // Initialize navigate
   const user = useSelector((state) => state.user.user);
-  const [images, setImages] = useState([]);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     axios.get('http://localhost:8000/profile', { withCredentials: true })
@@ -27,49 +26,45 @@ const UserProfile = () => {
       });
   }, [dispatch]);
 
-  const handleclick = () => {
+  const handleLogout = () => {
     dispatch(setUser(null));
     navigate('/');
   };
 
-  const handleImage = (e) => {
-    const img = e.target.files[0];
-    
-    setImages([img]);
-   
-    if (img) {
-      console.log('hai')
-      const storageRef = ref(storage, `profilePictures/${img.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, img);
-      console.log(storageRef)
-      console.log(uploadTask)
-     
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        // Optionally handle progress updates here
-      },
-      (error) => {
-        // Handle unsuccessful uploads
-        console.error("Upload failed", error);
-      },
-      () => {
-        // Handle successful uploads and get the download URL
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log("File available at", downloadURL);
-          axios.patch(`http://localhost:8000/Images?Url=${downloadURL}&&id=${user._id}`,{withCredentials:true})
-          .then((response)=>{
-           if(response.data.success){
-             window.location.reload()
-           }
-          }).catch((err)=>{
-            console.log(err)
-          })
+  const uploadImage = async () => {
+    try {
+      if (!image) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Select an image to upload!',
+          timer: 3000,
+          showConfirmButton: false,
         });
+      } else {
+        const imageUrl = await uploadImagesToFireStore(image, user._id);
+        localStorage.setItem('userDetails', JSON.stringify({ ...user, url: imageUrl }));
+        setImage(imageUrl);
+        Swal.fire({
+          icon: 'success',
+          title: 'Image Uploaded!',
+          text: 'Image uploaded successfully!',
+          timer: 3000,
+          showConfirmButton: false,
+        });
+       
       }
-    );
-  }
-};
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Image Upload Failed',
+        text: 'Something went wrong while uploading the image.',
+        timer: 3000,
+        showConfirmButton: false,
+      });;
+    }
+  };
 
   return (
     <div className="flex h-screen">
@@ -80,8 +75,9 @@ const UserProfile = () => {
             {/* Profile Picture Input */}
             <div className="relative w-24 h-24 mx-auto mb-4">
               <img
-                src={user?.profilePicture}
-                alt='img'
+                src={user?.profilePicture || '/default-profile.png'} // Fallback to default image if none is set
+                alt='Profile'
+                id="profile-img"
                 className="w-24 h-24 rounded-full shadow-lg border-4 border-white"
               />
               <label htmlFor="profilePicture" className="absolute bottom-0 right-0 bg-white p-1 rounded-full cursor-pointer shadow-md">
@@ -89,10 +85,17 @@ const UserProfile = () => {
               </label>
               <input
                 type="file"
-                id="profilePicture"
-                className="hidden"
-                onChange={handleImage}
                 accept="image/*"
+                className="mb-2 hidden" // Hide the input by default
+                id="profilePicture"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    const imgElement = document.getElementById('profile-img');
+                    imgElement.src = URL.createObjectURL(file);
+                    setImage(file);
+                  }
+                }}
               />
             </div>
 
@@ -123,14 +126,20 @@ const UserProfile = () => {
             </div>
 
             <button
-              onClick={handleclick}
+              onClick={handleLogout}
               className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-2 px-3 rounded-lg hover:opacity-90 focus:ring-4 focus:ring-pink-500 transition duration-300 transform hover:scale-110 mt-4"
             >
               LogOut
               <FontAwesomeIcon icon={faUser} className="ml-2" />
             </button>
-
           </div>
+
+          <button
+            onClick={uploadImage}
+            className="w-full mt-4 bg-gradient-to-r from-blue-500 to-teal-500 text-white font-bold py-2 px-3 rounded-lg hover:opacity-90 focus:ring-4 focus:ring-teal-500 transition duration-300 transform hover:scale-110"
+          >
+            Upload Image
+          </button>
         </div>
       </div>
 
@@ -142,6 +151,6 @@ const UserProfile = () => {
       </div>
     </div>
   );
-}
+};
 
 export default UserProfile;
