@@ -37,9 +37,14 @@ export const adminLogin = async (req, res) => {
 
   export const Users=async(req,res)=>{
     try{
-        const users= await User.find()
+      console.log(req.user)
+      
         
+        const users= await User.find()
+      
         res.send(users)
+      
+        
     }catch(err){
       console.log(err)
     }

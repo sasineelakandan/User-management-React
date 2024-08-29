@@ -4,11 +4,12 @@ import Sidebar from './Sidebar';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-
+import { setAdmin } from '../redux/Slice';
+import { useDispatch} from 'react-redux';
 const EditPage = () => {
     const navigate=useNavigate()
     const location = useLocation();
-    
+    const dispatch = useDispatch();
     const params = new URLSearchParams(location.search);
     const userId = params.get('id');
     const [user, setUser] = useState(null);
@@ -36,6 +37,11 @@ const EditPage = () => {
     const onSubmit = (data) => {
         axios.put(`http://localhost:8000/updateuser?id=${userId}`,data, { withCredentials: true })
         .then((response)=>{
+        if(response.data.failToken){
+               
+            dispatch(setAdmin(false)) 
+                 
+            }
         if(response.data.sucess){
             Swal.fire({
                 title: 'Success!',
@@ -45,6 +51,7 @@ const EditPage = () => {
               }).then(() => {
                 navigate('/users'); 
               });
+
         }else{
             Swal.fire({
                 title: 'Error!',

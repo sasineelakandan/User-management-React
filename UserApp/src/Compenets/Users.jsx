@@ -4,11 +4,13 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import AddUserModal from './Modal';
 import Swal from 'sweetalert2';
-
+import { setAdmin } from '../redux/Slice';
+import { useDispatch} from 'react-redux';
 const UsersTable = () => {
 
 
 
+const dispatch = useDispatch();
 const[users,setUsers]=useState([]) 
 const [searchQuery, setSearchQuery] = useState('');
 const [isModalOpen, setModalOpen] = useState(false);
@@ -17,16 +19,19 @@ const closeModal = () => setModalOpen(false);
 const navigate=useNavigate() 
 
 useEffect(()=>{
-  axios.get('http://localhost:8000/Users', { withCredentials: true })
+  axios.get('http://localhost:8000/users', { withCredentials: true })
   .then((response) => {
-    if(response.data){
-    setUsers(response.data);
-     
+    if (response?.data?.failToken) {
+      dispatch(setAdmin(false));
+    }
+    if (response?.data) {
+      console.log(response.data);
+      setUsers(response.data);
     }
   })
   .catch((err) => {
     console.log(err);
-  });
+  })
   
 },[])
 console.log(users)
@@ -134,14 +139,14 @@ const handleSearch = () => {
               </tr>
             </thead>
             <tbody>
-              {users.length === 0 ? (
+              {users?.length === 0 ? (
                 <tr>
                   <td colSpan="4" className="py-2 px-4 text-center">
                     No users found
                   </td>
                 </tr>
               ) : (
-                users.map((user) => (
+                users?.map((user) => (
                   <tr key={user?._id} className="border-b hover:bg-gray-50">
                     <td className="py-2 px-4">{user?.Name}</td>
                     <td className="py-2 px-4">{user?.phone}</td>
