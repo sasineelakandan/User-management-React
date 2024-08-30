@@ -10,10 +10,11 @@ import Swal from 'sweetalert2';
 const UserProfile = () => {
 
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate(); 
   const user = useSelector((state) => state.user.user);
   const [image, setImage] = useState(null);
-
+ 
+ 
   useEffect(() => {
     axios.get('http://localhost:8000/profile', { withCredentials: true })
       .then(response => {
@@ -38,21 +39,21 @@ const UserProfile = () => {
           icon: 'error',
           title: 'Oops...',
           text: 'Select an image to upload!',
-          timer: 3000,
+          timer: 2000,
           showConfirmButton: false,
         });
       } else {
         const imageUrl = await uploadImagesToFireStore(image, user._id);
-        localStorage.setItem('userDetails', JSON.stringify({ ...user, url: imageUrl }));
+        localStorage.setItem('user', JSON.stringify({ ...user, url: imageUrl }));
         setImage(imageUrl);
         Swal.fire({
           icon: 'success',
           title: 'Image Uploaded!',
           text: 'Image uploaded successfully!',
-          timer: 3000,
+          timer: 2000,
           showConfirmButton: false,
         });
-       
+        
       }
     } catch (error) {
       console.log(error);
@@ -60,7 +61,7 @@ const UserProfile = () => {
         icon: 'error',
         title: 'Image Upload Failed',
         text: 'Something went wrong while uploading the image.',
-        timer: 3000,
+        timer: 2000,
         showConfirmButton: false,
       });;
     }
@@ -144,11 +145,70 @@ const UserProfile = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 bg-gray-100 p-4">
-        {/* Your main content goes here */}
-        <h1 className="text-2xl font-bold">Main Content Area</h1>
-        {/* Add more content as needed */}
+      {/* Main Content */}
+  <div className="flex-1 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-6">
+  <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+    <div className="flex items-center space-x-4">
+      
+      <div>
+        <h2 className="text-xl font-bold text-gray-800">{user?.Name}</h2>
+        <p className="text-gray-600">Software Developer</p>
       </div>
+    </div>
+  </div>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {/* Recent Activity Card */}
+    <div className="bg-white rounded-lg shadow-lg p-4">
+      <h3 className="text-lg font-bold text-gray-800 mb-2">Recent Activity</h3>
+      <ul className="text-gray-600">
+        <li className="mb-2">• Completed React project.</li>
+        <li className="mb-2">• Joined a new team.</li>
+        <li>• Started learning TypeScript.</li>
+      </ul>
+    </div>
+
+    {/* Notifications Card */}
+    <div className="bg-white rounded-lg shadow-lg p-4">
+      <h3 className="text-lg font-bold text-gray-800 mb-2">Notifications</h3>
+      <ul className="text-gray-600">
+        <li className="mb-2">• You have 3 new messages.</li>
+        <li className="mb-2">• Update available for your project.</li>
+        <li>• Upcoming meeting at 3 PM.</li>
+      </ul>
+    </div>
+
+    {/* Progress Card */}
+    <div className="bg-white rounded-lg shadow-lg p-4">
+      <h3 className="text-lg font-bold text-gray-800 mb-2">Project Progress</h3>
+      <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+        <div className="bg-purple-600 h-2.5 rounded-full" style={{ width: '70%' }}></div>
+      </div>
+      <p className="text-gray-600">70% Completed</p>
+    </div>
+
+    {/* Tasks Card */}
+    <div className="bg-white rounded-lg shadow-lg p-4">
+      <h3 className="text-lg font-bold text-gray-800 mb-2">Tasks</h3>
+      <ul className="text-gray-600">
+        <li className="mb-2">• Finish the design review.</li>
+        <li className="mb-2">• Submit the weekly report.</li>
+        <li>• Review code PRs.</li>
+      </ul>
+    </div>
+
+    {/* Team Updates Card */}
+    <div className="bg-white rounded-lg shadow-lg p-4">
+      <h3 className="text-lg font-bold text-gray-800 mb-2">Team Updates</h3>
+      <ul className="text-gray-600">
+        <li className="mb-2">• Sarah completed the UI task.</li>
+        <li className="mb-2">• Team meeting rescheduled to Friday.</li>
+        <li>• New team member joining tomorrow.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
     </div>
   );
 };

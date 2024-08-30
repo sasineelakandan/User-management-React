@@ -16,44 +16,44 @@ const Sidebar = () => {
         
     }
     return (
-        <div className="flex">
-            {/* Sidebar */}
-            <div className="bg-gray-900 h-screen w-64 text-white p-5">
-                <div className="text-2xl font-bold mb-10">Hello Admin</div>
-                <nav>
-                    <ul>
-                        <li className="mb-6">
-                            <Link to="/adminHome" className="flex items-center space-x-2">
-                                <FaTachometerAlt />
-                                <span>Dashboard</span>
-                            </Link>
-                        </li>
-                        <li className="mb-6">
-                            <Link to="/users" className="flex items-center space-x-2">
-                                <FaUsers />
-                                <span>Users</span>
-                            </Link>
-                        </li>
-                        <li className="mb-6">
-                            <button onClick={handleclick} className="flex items-center space-x-2">
-                                <FaUsers />
-                                <span>logout</span>
-                            </button>
-                        </li>
-                        <li>
-                            <Link to="/settings" className="flex items-center space-x-2">
-                                <FaCog />
-                                <span>Settings</span>
-                            </Link>
-                        </li>
-                    </ul>
-                </nav>
+        
+            <div className="flex">
+                {/* Sidebar */}
+                <div className="bg-gray-900 h-screen w-64 text-white p-5">
+                    <div className="text-2xl font-bold mb-10">Hello Admin</div>
+                    <nav>
+                        <ul>
+                            <li className="mb-6">
+                                <Link 
+                                    to="/adminHome" 
+                                    className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-700 hover:text-indigo-300 transition duration-300 ease-in-out transform hover:scale-105"
+                                >
+                                    <FaTachometerAlt />
+                                    <span>Dashboard</span>
+                                </Link>
+                            </li>
+                            <li className="mb-6">
+                                <Link 
+                                    to="/users" 
+                                    className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-700 hover:text-indigo-300 transition duration-300 ease-in-out transform hover:scale-105"
+                                >
+                                    <FaUsers />
+                                    <span>Users</span>
+                                </Link>
+                            </li>
+                            <li className="mb-6">
+                                <button 
+                                    onClick={handleclick} 
+                                    className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-700 hover:text-red-300 transition duration-300 ease-in-out transform hover:scale-105"
+                                >
+                                    <FaUsers />
+                                    <span>Logout</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
-
-            
-           
-        </div>
-    );
-};
-
+        );
+    };
 export default Sidebar;

@@ -28,11 +28,11 @@ const App = () => {
         <Route path='/signup' element={ <SignUpPage/>}/>
         <Route path='/profile' element={user? <UserProfile />:<Navigate to ={'/'}/> } />
         <Route path='/' element={user?  <Navigate to={"/profile"} /> : <LoginForm/>}/> 
-        <Route path='/editProfile'  element={<Home/>}/> 
+       
         <Route path='/adminLogin'  element={isAdmin? <Navigate to ={'/adminHome'} />:<ALoginForm/>}/> 
         <Route path='/adminHome'  element={isAdmin?<AdminHome/>:<Navigate to = {'/adminLogin'}/>}/> 
-        <Route path='/users'  element={<Users/>}/> 
-        <Route path='/edit' element={<EditPage/>}/>
+        <Route path='/users'  element={isAdmin?<Users/>:<Navigate to = {'/adminLogin'}/>}/> 
+        <Route path='/edit' element={isAdmin?<EditPage/>:<Navigate to = {'/adminLogin'}/>}/>
       </Routes>
     </Router>
 );
