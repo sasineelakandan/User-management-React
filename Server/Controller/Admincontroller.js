@@ -66,30 +66,32 @@ export const editPage=async(req,res)=>{
 
 export const updateUser=async(req,res)=>{
 
-  try{ 
-    
-    
-    const existingUser = await User.findOne({
-      _id: { $ne: req.query.id }, // Exclude the current user from the check
-      $or: [{ email:req.body.email }, { phone:req.body.phone }]
-    });
-    console.log(existingUser)
-    if (existingUser) {
-      return res.send({success: false})
-        
-      
-      
+  try {
+    const { name, email, phone } = req.body
+        const usercheck = await User.findOne({ $or: [{ email }, { phone }] })
+        if (usercheck && req.query.id != usercheck._id) {
+            res.send({ success: false })
+        }
+    const result = await User.updateOne(
+      { _id: req.query.id },
+      {
+        $set: {
+          Name: name,
+          email: email,
+          phone: phone
+        }
+      }
+    );
+   
+    if (result.modifiedCount === 0) {
+      return res.send({ success: true})
     }
-    const update= await User.updateOne({_id:req.query.id},{$set:{
-      Name:req.body.name,
-      email:req.body.email,
-      phone:req.body.phone
-    }})
-     
-    res.send({sucess:true})
+
+    res.send({ success: true })
     
-  }catch(err){
-    console.log(err)
+  } catch (err) {
+    console.error(err);
+    res.send({ success: false});
   }
 }
 

@@ -42,7 +42,7 @@ const EditPage = () => {
             dispatch(setAdmin(false)) 
                  
             }
-        if(response.data.sucess){
+        if(response.data.success){
             Swal.fire({
                 title: 'Success!',
                 text: 'Update successfully!',
